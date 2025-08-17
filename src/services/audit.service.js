@@ -1,15 +1,16 @@
 import { collection, addDoc, getDocs, query, orderBy, serverTimestamp } from "firebase/firestore";
 import db from "../config/firebase.js";
 
+const COLLECTION_NAME = "calculator_audit_log";
 export async function logEvent(eventData) {
-    return await addDoc(collection(db, "calculator_audit_log"), {
+    return await addDoc(collection(db, COLLECTION_NAME), {
         ...eventData,
         timestamp: serverTimestamp(),
     });
 }
 
 export async function getAuditHistory() {
-    const colRef = collection(db, "calculator_audit_log");
+    const colRef = collection(db, COLLECTION_NAME);
     const q = query(colRef, orderBy("timestamp", "desc"));
     const snapshot = await getDocs(q);
 
